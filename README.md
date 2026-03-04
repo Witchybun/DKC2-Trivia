@@ -34,13 +34,15 @@ The question format should follow this:
 The filename of the `.txt` file does not matter.
 
 # Interacting with the database as a developer
-You can import the parsed trivia database with:
+You can import the parsed trivia database with the following code:
 ```
-from worlds._dkc2_trivia.trivia import parse_topics
+from worlds._dkc2_trivia.trivia import retrieve_topics
 
-trivia_topics = parse_topics()
+trivia_topics = retrieve_topics(topics: Iterable[str], is_dkc2: bool)
 ```
-It will return a dictionary containing the entire database by topic name, with each topic contained in its own `Topic` object (`dict[str, Topic]`).
+Topics accepts a list of topics/games that the function will return as a dictionary containing the topic by name, with each topic contained in its `Topic` object (`dict[str, Topic]`).
+If the topics argument is omitted or is an empty `Iterable` it'll retrieve every single topic without filters. This is the default behavior.
+There's a special flag that converts the database into a DKC2 compatible one, it's off by default. You probably shouldn't worry about this one.
 
 ## Topic object
 `Topic` objects contain every single question that falls into said topic separated by easy, medium and hard questions. Those can be accesed by the `Topic`'s attributes and they return a list:
@@ -65,8 +67,6 @@ incorrect_answer_3: str
 There's the `fetch_incorrect_answers()` function that returns a list of incorrect answers (`list[str]`).
 
 Do note that most of the questions were made with DKC2 in mind, which means that most of them have an "invalid" third incorrect answer which defaults to `"None are correct :)"`.
-
-Not so relevant note: If one passes a specific bool through `parse_topics`, `question` will return a `list[str]` instead which also has a very _different_ format. Said bool defaults to false, so there's nothing to worry about not declaring it anywhere.
 
 ## Shorter game names
 In case you require short game names and don't want to create a dictionary of those, the apworld also provides those.
